@@ -1,0 +1,22 @@
+
+input{
+    border: 2px solid black;
+    background: rgb(244, 194, 194);
+        color: black;
+        font-size: small;
+        margin: 2px;
+}
+option{
+    border: 2px solid black;
+    background: rgb(244, 194, 194);
+        color: black;
+        font-size: small;
+    
+}
+select{
+    border: 2px solid black;
+    background: skyblue;
+        color: black;
+        font-size: small;
+
+}
