@@ -1,0 +1,12 @@
+
+.active{
+    
+    color: rgb(71, 114, 125);
+    
+}
+a:not(.active){
+    &:hover{
+        color:white ;
+    }
+}
+

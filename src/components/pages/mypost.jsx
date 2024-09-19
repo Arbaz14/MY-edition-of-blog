@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import service from "../appwrite/config.js";
-import {docid} from "../../store/docsslice.js";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Typography,
-  Avatar,
-  Tooltip,
-  Button,
-} from "@material-tailwind/react";
+import { docid } from "../../store/docsslice.js";
+import { Card, CardHeader, CardBody, Image, CardFooter, Button } from "@nextui-org/react";
+import Tilt from 'react-parallax-tilt';
 import { useNavigate } from "react-router-dom";
 
 export const Mypost = () => {
@@ -19,8 +11,9 @@ export const Mypost = () => {
   const [imagehref, setimagehref] = useState([]);
   const data = useSelector((state) => state.doc.data);
   const status = useSelector((state) => state.doc.status);
-const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (status) {
       service
@@ -32,7 +25,6 @@ const navigate = useNavigate()
           const FEATURED_IMAGE = res.documents.map(
             (element) => element.FEATURED_IMAGE
           );
-          
 
           // Get image URLs for each featured image
           const imageURLs = await Promise.all(
@@ -52,79 +44,72 @@ const navigate = useNavigate()
     }
   }, [status, data]);
 
+  useEffect(()=>{
+    if(!status){
+    
+      navigate("/")
+    }},[status])
+    
   return (
-    <div className="flex justify-evenly items-end content-center flex-wrap gap-[0.5vw] relative z-[1]
-">
+    <div className="flex flex-wrap dark gap-[0.5vw] justify-evenly items-start bg-gray-900 min-h-screen">
       {docs === undefined ? (
-        <h1>Loading....</h1>
+        <h1 className="text-white">Loading....</h1>
       ) : docs.documents.length === 0 ? (
-        <h1>No post available</h1>
+        <h1 className="text-white">No post available</h1>
       ) : (
-
-
-        docs.documents.map((element, index) => {
-          return (
-            <div key={element.$id} >
-              {/* <h1 className="text-red-700">{element.TITLE}</h1>
-              <p>{element.CONTENT}</p>
-              {imagehref[index] ? (
-                <img src={imagehref[index]} alt="Image not found" />
-              ) : (
-                <p>No image available</p>
-              )} */}
-
-
-
-
-<Card className="max-w-[24rem] overflow-hidden "  >
-      <CardHeader
-        floated={false}
-        shadow={false}
-        color="transparent"
-        className="m-0 rounded-none"
-      >
-        {imagehref[index] ? (
-                <img src={imagehref[index]} alt="Image not found"  />
-              ) : (
-                <p>No image available</p>
-              )}
-      </CardHeader>
-      <CardBody>
-        <Typography variant="h4" color="blue-gray">
-        {element.TITLE}
-        </Typography>
-        <Typography variant="lead" color="gray" className="mt-3 font-normal">
-        {element.CONTENT}
-        </Typography>
-      </CardBody>
-      <CardFooter className="flex items-center justify-between">
-        <div className="flex items-center -space-x-3">
-         {/* <Button className=" border-solid border-2 border-red-400 cursor-pointer" onClick={navigate('/Read-more')} > Read more</Button>
-         <Button className=" border-solid border-2 border-red-400 cursor-pointer" onClick={navigate('/e')}> edit</Button>
-         <Button className=" border-solid border-2 border-red-400 cursor-pointer" onClick={navigate('/delet')}> delet</Button> */}
-          <button onClick={() => {console.log("document id is",element.$id)
-            dispatch(docid(element.$id))
-            navigate('/post')
-          }}> readmore</button>
-        </div>
-      </CardFooter>
-    </Card>
-
-
-
-
-
-
-
-
-            </div>
-
-              
-
-
-          );
-        })
+        docs.documents.map((element, index) => (
+          <Tilt
+            key={element.$id}
+            tiltMaxAngleX={10}
+            tiltMaxAngleY={10}
+            perspective={1000}
+            scale={1.05}
+            gyroscope={true}
+            glareEnable={true}
+            glareMaxOpacity={0.5}
+            glareColor="lightblue"
+            glarePosition="bottom"
+            glareBorderRadius="1vw" // Rounded glare effect
+          >
+            <Card className="py-4 max-w-[90vw] md:max-w-[22vw] min-h-[300px] flex flex-col rounded-lg bg-gray-800 text-white shadow-lg transition-shadow duration-300 hover:shadow-2xl hover:shadow-[#00000080]">
+              <CardHeader className="overflow-visible py-2">
+                {imagehref[index] ? (
+                  <Image
+                    alt="Card background"
+                    className="object-contain aspect-video rounded-t-lg"
+                    src={imagehref[index]}
+                    width={270}
+                  />
+                ) : (
+                  <p>No image available</p>
+                )}
+              </CardHeader>
+            
+              <CardBody className="pb-0 pt-2 px-4 flex flex-col flex-grow text-ellipsis overflow-hidden">
+                <h4 className="font-bold text-lg text-ellipsis md:text-xl whitespace-nowrap overflow-hidden">{element.TITLE}</h4>
+                <h1 className="text-xs md:text-sm uppercase font-bold text-ellipsis whitespace-nowrap overflow-hidden">
+                  {element.CONTENT}
+                </h1>
+              </CardBody>
+            
+              <CardFooter className="p-[1.4vw] mt-auto rounded-b-lg">
+                <Button
+                  color="primary"
+                  variant="ghost"
+                  onClick={() => {
+                    navigate("/post");
+                    dispatch(docid(element.$id));
+                  }}
+                >
+                  Readmore
+                </Button>
+              </CardFooter>
+            </Card>
+          </Tilt>
+        ))
       )}
     </div>
   );
+
+  
 };

@@ -155,6 +155,25 @@ class AppwriteService {
       );
     }
   }
+  async searchDocuments(search) {
+    try {
+      const result = await this.databases.listDocuments(
+        conf.VITE_DTABASE_ID, // databaseId
+        conf.VITE_COLLECTION_ID, // collectionId
+        [Query.equal("STATUS", ["true"]), // queries (optional)
+        Query.contains("TITLE", [search])
+        
+      ] // queries (optional)
+      );
+      return result;
+    } catch (error) {
+      throw new ApiError(
+        "401",
+        "",
+        `Something went wrong during getting document list ${error}`
+      );
+    }
+  }
   async getuserDocuments(ID) {
     try {
       const result = await this.databases.listDocuments(

@@ -17,6 +17,9 @@ import { Editpost } from "./components/pages/editpost.jsx";
 import { Post } from "./components/pages/post.jsx";
 import { Allpost } from "./components/pages/allpost.jsx";
 import { Readmore } from "./components/pages/readmore.jsx";
+import {NextUIProvider} from '@nextui-org/react'
+import { Search } from "./components/pages/search.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -58,14 +61,20 @@ const router = createBrowserRouter([
         path: "/readmore",
         element: <Readmore />,
       },
+      {
+        path: "/ser",
+        element: <Search />,
+      },
     ],
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <NextUIProvider>
     <Provider store={store}>
     <RouterProvider router={router} />
     </Provider>
+    </NextUIProvider>
   </StrictMode>
 );

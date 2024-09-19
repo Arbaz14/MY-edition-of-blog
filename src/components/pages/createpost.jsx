@@ -1,60 +1,108 @@
-import React, { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-  import "./createpost.css"
-  import service  from '../appwrite/config.js'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import service from '../appwrite/config.js';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export const Createpost = () => {
-  const {register,handleSubmit}=useForm()
-  let data = useSelector(state => state.doc.data)   
-function submit(e) {
-  service.getUser().then((res)=>{
-    console.log("response of createpost", res)
-  })
-  const imagelink = service.uploadImage(e.image[0]).then((res)=>{
-    console.log(res.$id)
-    const createdocument = service.createDocument(
-      {
-        "TITLE":String(e.title),
-        "CONTENT": String(e.description),
-        "FEATURED_IMAGE": String(res.$id),
-        "STATUS": String(e.status),
-        "USER_ID":String(data.data.$id) ,
-      }
-    
-    ).then((res)=>{
-      console.log(res)
-    }).catch((err)=>{
-      console.log(err)
-    })
-    
-  console.log("created document is ",createdocument)
-
-    return res.$id
-    
-  }).catch((err)=>{
-    console.log(err)
-  })
-  // console.log(data.data.$id) 
-
-} 
-  return (
-    <>
-    <form onSubmit={handleSubmit(submit)}>
-      <input type="text" placeholder='title' {...register('title')}/>
-      <input type="text" placeholder='description' {...register('description')}/>
-      <input type="file" placeholder='image' {...register('image')}/>
-      <select name="" id="" {...register('status')}>
-      <option value={true}>isActive</option>
-      <option value={false}>NonActive</option>
+  const { register, handleSubmit } = useForm();
+  const data = useSelector(state => state.doc.data);
+  const status = useSelector(state => state.doc.status);
+const navigate =useNavigate()
+  const submit = async (e) => {
+    try {
+      // Get user data
+      const user = await service.getUser();
+      console.log("response of createpost", user);
       
-      </select>
-      <input type="submit" placeholder='Submit'value={"submit"} {...register('submit')}/>
+      // Upload image
+      const imageResponse = await service.uploadImage(e.image[0]);
+      console.log(imageResponse.$id);
 
+      // Create document
+      const documentResponse = await service.createDocument({
+        TITLE: String(e.title),
+        CONTENT: String(e.description),
+        FEATURED_IMAGE: String(imageResponse.$id),
+        STATUS: String(e.status),
+        USER_ID: String(data.data.$id),
+      }).then(res => {
+        console.log(res);
+        navigate("/My-post");
+        
+      });
+      console.log(documentResponse);
 
+      return imageResponse.$id;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+useEffect(()=>{
+if(!status){
 
-    </form>
+  navigate("/")
+}},[status])
 
-    </>
-  )
-}
+  
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <div className="w-full max-w-md p-8 bg-gray-800 text-white rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold mb-6 text-center">Create a New Post</h2>
+          <form onSubmit={handleSubmit(submit)} className="space-y-4">
+            <div>
+              <label htmlFor="title" className="block text-sm font-medium mb-1">Title</label>
+              <input
+                type="text"
+                id="title"
+                placeholder="Enter title"
+                {...register('title')}
+                className="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+  
+            <div>
+              <label htmlFor="description" className="block text-sm font-medium mb-1">Description</label>
+              <textarea
+                id="description"
+                placeholder="Enter description"
+                {...register('description')}
+                className="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                rows="4"
+              />
+            </div>
+  
+            <div>
+              <label htmlFor="image" className="block text-sm font-medium mb-1">Image</label>
+              <input
+                type="file"
+                id="image"
+                {...register('image')}
+                className="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none"
+              />
+            </div>
+  
+            <div>
+              <label htmlFor="status" className="block text-sm font-medium mb-1">Status</label>
+              <select
+                id="status"
+                {...register('status')}
+                className="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
+            </div>
+      
+            <button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition-transform transform hover:scale-105"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  
+};

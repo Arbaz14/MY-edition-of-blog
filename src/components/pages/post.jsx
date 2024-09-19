@@ -1,94 +1,94 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import service from "../appwrite/config.js";
 import { useNavigate } from "react-router-dom";
+import { div } from "framer-motion/client";
 
 export const Post = () => {
   const docid = useSelector((state) => state.doc.documentid);
+  const status = useSelector((state) => state.doc.status);
   const [userdoc, setuserdoc] = useState();
   const [image, setimage] = useState();
-  const [imageid, setimageid] = useState()
-  
+  const [imageid, setimageid] = useState();
   const navigate = useNavigate();
+
   useEffect(() => {
     service.getDocument(docid).then((response) => {
-      console.log(response.TITLE);
       setuserdoc(response);
       setimageid(response.FEATURED_IMAGE);
 
       service.getImage(response.FEATURED_IMAGE).then((response) => {
-        console.log(response);
         setimage(response.href);
       });
     });
-  }, []);
-  console.log("docid is", docid);
-  console.log(userdoc);
+  }, [docid]);
+  useEffect(()=>{
+    if(!status){
+    
+      navigate("/")
+    }},[status])
+    
+  
 
-  return (
-    <>
-      {userdoc === undefined ? (
-        <div>
-          <h1>Loading...</h1>
-        </div>
-      ) : (
-        <div className="flex flex-col items-center h-[40vw] text-white m-4 bg-black">
-          <div className="self-start font-black text-[2vw] leading-9 block w-full h-16  capitalize">
-            {userdoc.TITLE}
+    return (
+      <div className="bg-black">
+      <div className="max-w-5xl mx-auto p-6 bg-gradient-to-r from-gray-800 to-black text-white rounded-lg shadow-lg">
+        {userdoc === undefined ? (
+          <div className="flex justify-center items-center h-60 ">
+            <span className="text-xl text-gray-400">Loading...</span>
           </div>
-          <div className="flex justify-evenly flex-row  h-[30vw] w-full">
-            <div className=" w-full">
-              <img
-                src={image}
-                alt="image not found"
-                className="w-full h-full object-contain"
-              />
+        ) : (
+          <div className="rounded-lg overflow-hidden bg-gray-900">
+            <div className="p-6 border-b border-gray-700">
+              <h2 className="text-4xl font-extrabold capitalize">{userdoc.TITLE}</h2>
             </div>
-            <div  className="  p-6 w-full overflow-auto text-[1.5vw] leading-7">
-              {userdoc.CONTENT}
+            
+            <div className="flex flex-col md:flex-row">
+              <div className="w-full md:w-1/2 p-4">
+                <img
+                  src={image}
+                  alt="Featured"
+                  className="w-full h-full object-cover rounded-lg shadow-md transition-transform transform hover:scale-105"
+                />
+              </div>
+              <div className="w-full md:w-1/2 p-4 overflow-auto text-lg leading-relaxed">
+                <p>{userdoc.CONTENT}</p>
+              </div>
             </div>
-          </div>
-          <div className="flex justify-evenly w-full bg-aquamarine h-[3vw]">
-            <div className="flex items-center justify-center w-full">
-              {userdoc.STATUS === "true" ? (
-                <h1>isactive</h1>
-              ) : (
-                <h1> nonactive</h1>
-              )}
-              {console.log(String(userdoc.STATUS))}
-            </div>
-            <div className="flex items-center justify-start flex-row bg-blue w-full">
-              <div className="flex items-center justify-start flex-row bg-blue w-full">
+            
+            <div className="p-4 bg-gray-800 border-t border-gray-700 flex justify-between">
+              <div className="flex items-center">
+                <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                  userdoc.STATUS === "true" ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                }`}>
+                  {userdoc.STATUS === "true" ? 'Active' : 'Inactive'}
+                </span>
+              </div>
+              <div className="flex gap-4">
                 <button
-                  className="w-52 h-8 bg-[#000] text-[1.4vw] leading-7 border-[2px] border-red-800 capitalize"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold transition-transform transform hover:scale-105"
                   onClick={() => navigate("/edit")}
                 >
-                  edit
+                  Edit
                 </button>
-              </div>
-              <div className="flex items-center justify-start flex-row bg-blue w-full">
                 <button
-                  className="w-52 h-8 bg-[#000] text-[1.4vw] leading-7 border-[2px] border-red-800  capitalize"
-                  onClick={() =>
+                  className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-semibold transition-transform transform hover:scale-105"
+                  onClick={() => {
                     service.deleteDocument(docid).then(() => {
-                      service.deleteImage(imageid).then((res) => {
-                        console.log(res);
-                      }).catch((err) => {
-                        console.log(err);
-                      })
-
-
-                      navigate("/My-post");
-                    })
-                  }
+                      service.deleteImage(imageid).then(() => {
+                        navigate("/My-post");
+                      });
+                    });
+                  }}
                 >
-                  delete
+                  Delete
                 </button>
               </div>
             </div>
           </div>
-        </div>
-      )}
-    </>
-  );
+        )}
+      </div>
+      </div>
+    );    
+  
 };
