@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import service from "../appwrite/config.js";
 import { docid } from "../../store/docsslice.js";
-import { Card, CardHeader, CardBody, Image, CardFooter, Button } from "@nextui-org/react";
-import Tilt from 'react-parallax-tilt';
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Image,
+  CardFooter,
+  Button,
+} from "@nextui-org/react";
+import Tilt from "react-parallax-tilt";
 import { useNavigate } from "react-router-dom";
+import parse from "html-react-parser";
 
 export const Mypost = () => {
   const [docs, setdocs] = useState();
@@ -20,7 +28,6 @@ export const Mypost = () => {
         .getuserDocuments(data.data.$id)
         .then(async (res) => {
           setdocs(res);
-          console.log(res);
 
           const FEATURED_IMAGE = res.documents.map(
             (element) => element.FEATURED_IMAGE
@@ -36,7 +43,6 @@ export const Mypost = () => {
 
           // Update state once all image URLs are fetched
           setimagehref(imageURLs);
-          console.log(imagehref);
         })
         .catch((err) => {
           console.log(err);
@@ -44,12 +50,12 @@ export const Mypost = () => {
     }
   }, [status, data]);
 
-  useEffect(()=>{
-    if(!status){
-    
-      navigate("/")
-    }},[status])
-    
+  useEffect(() => {
+    if (!status) {
+      navigate("/");
+    }
+  }, [status]);
+
   return (
     <div className="flex flex-wrap dark gap-[0.5vw] justify-evenly items-start bg-gray-900 min-h-screen">
       {docs === undefined ? (
@@ -84,14 +90,16 @@ export const Mypost = () => {
                   <p>No image available</p>
                 )}
               </CardHeader>
-            
+
               <CardBody className="pb-0 pt-2 px-4 flex flex-col flex-grow text-ellipsis overflow-hidden">
-                <h4 className="font-bold text-lg text-ellipsis md:text-xl whitespace-nowrap overflow-hidden">{element.TITLE}</h4>
+                <h4 className="font-bold text-lg text-ellipsis md:text-xl whitespace-nowrap overflow-hidden">
+                  {element.TITLE}
+                </h4>
                 <h1 className="text-xs md:text-sm uppercase font-bold text-ellipsis whitespace-nowrap overflow-hidden">
-                  {element.CONTENT}
+                  {element.CONTENT && parse(element.CONTENT)}
                 </h1>
               </CardBody>
-            
+
               <CardFooter className="p-[1.4vw] mt-auto rounded-b-lg">
                 <Button
                   color="primary"
@@ -110,6 +118,4 @@ export const Mypost = () => {
       )}
     </div>
   );
-
-  
 };

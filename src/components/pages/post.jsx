@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import service from "../appwrite/config.js";
 import { useNavigate } from "react-router-dom";
-import { div } from "framer-motion/client";
+import parse from "html-react-parser";
 
 export const Post = () => {
   const docid = useSelector((state) => state.doc.documentid);
@@ -16,22 +16,19 @@ export const Post = () => {
     service.getDocument(docid).then((response) => {
       setuserdoc(response);
       setimageid(response.FEATURED_IMAGE);
-
       service.getImage(response.FEATURED_IMAGE).then((response) => {
         setimage(response.href);
       });
     });
   }, [docid]);
-  useEffect(()=>{
-    if(!status){
-    
-      navigate("/")
-    }},[status])
-    
-  
+  useEffect(() => {
+    if (!status) {
+      navigate("/");
+    }
+  }, [status]);
 
-    return (
-      <div className="bg-black">
+  return (
+    <div className="bg-black">
       <div className="max-w-5xl mx-auto p-6 bg-gradient-to-r from-gray-800 to-black text-white rounded-lg shadow-lg">
         {userdoc === undefined ? (
           <div className="flex justify-center items-center h-60 ">
@@ -40,9 +37,11 @@ export const Post = () => {
         ) : (
           <div className="rounded-lg overflow-hidden bg-gray-900">
             <div className="p-6 border-b border-gray-700">
-              <h2 className="text-4xl font-extrabold capitalize">{userdoc.TITLE}</h2>
+              <h2 className="text-4xl font-extrabold capitalize">
+                {userdoc.TITLE}
+              </h2>
             </div>
-            
+
             <div className="flex flex-col md:flex-row">
               <div className="w-full md:w-1/2 p-4">
                 <img
@@ -52,16 +51,20 @@ export const Post = () => {
                 />
               </div>
               <div className="w-full md:w-1/2 p-4 overflow-auto text-lg leading-relaxed">
-                <p>{userdoc.CONTENT}</p>
+                <p>{userdoc.CONTENT && parse(userdoc.CONTENT)}</p>
               </div>
             </div>
-            
+
             <div className="p-4 bg-gray-800 border-t border-gray-700 flex justify-between">
               <div className="flex items-center">
-                <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                  userdoc.STATUS === "true" ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-                }`}>
-                  {userdoc.STATUS === "true" ? 'Active' : 'Inactive'}
+                <span
+                  className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                    userdoc.STATUS === "true"
+                      ? "bg-green-500 text-white"
+                      : "bg-red-500 text-white"
+                  }`}
+                >
+                  {userdoc.STATUS === "true" ? "Active" : "Inactive"}
                 </span>
               </div>
               <div className="flex gap-4">
@@ -88,7 +91,6 @@ export const Post = () => {
           </div>
         )}
       </div>
-      </div>
-    );    
-  
+    </div>
+  );
 };

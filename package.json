@@ -18,8 +18,10 @@
     "@nextui-org/system": "^2.2.6",
     "@nextui-org/theme": "^2.2.11",
     "@reduxjs/toolkit": "^2.2.7",
+    "@tinymce/tinymce-react": "^5.1.1",
     "appwrite": "^15.0.0",
     "framer-motion": "^11.5.4",
+    "html-react-parser": "^5.1.16",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
@@ -30,6 +32,7 @@
     "react-tilt": "^1.0.2",
     "redux": "^5.0.1",
     "tilt.js": "^1.2.1",
+    "tinymce": "^7.3.0",
     "vanilla-tilt": "^1.8.1"
   },
   "devDependencies": {

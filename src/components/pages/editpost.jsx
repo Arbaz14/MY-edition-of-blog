@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import service from "../appwrite/config.js";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Tinymc } from "../tinymce/tiinymce.jsx";
 
 export const Editpost = () => {
   const { register, handleSubmit, setValue } = useForm();
@@ -12,13 +13,15 @@ export const Editpost = () => {
   const [imageid, setimageid] = useState();
   const [image, setimage] = useState();
   const navigate = useNavigate();
-
+  const [content, setcontent] = useState();
+  function getvalue(document) {
+    setcontent(document);
+  }
   useEffect(() => {
     service.getDocument(docid).then((response) => {
       setuserdoc(response);
       setimageid(response.FEATURED_IMAGE);
       setValue("title", response.TITLE);
-      setValue("description", response.CONTENT);
       setValue("status", response.STATUS);
 
       service.getImage(response.FEATURED_IMAGE).then((response) => {
@@ -38,7 +41,7 @@ export const Editpost = () => {
       if (e.image.length === 0) {
         await service.updateDocument(docid, {
           TITLE: String(e.title),
-          CONTENT: String(e.description),
+          CONTENT: content,
           STATUS: String(e.status),
         });
         navigate("/My-post");
@@ -46,7 +49,7 @@ export const Editpost = () => {
         const imageResponse = await service.uploadImage(e.image[0]);
         await service.updateDocument(docid, {
           TITLE: String(e.title),
-          CONTENT: String(e.description),
+          CONTENT: content,
           FEATURED_IMAGE: String(imageResponse.$id),
           STATUS: String(e.status),
         });
@@ -70,7 +73,12 @@ export const Editpost = () => {
             <h2 className="text-2xl font-bold mb-6 text-center">Edit Post</h2>
             <form onSubmit={handleSubmit(submit)} className="space-y-4">
               <div>
-                <label htmlFor="title" className="block text-sm font-medium mb-1">Title</label>
+                <label
+                  htmlFor="title"
+                  className="block text-sm font-medium mb-1"
+                >
+                  Title
+                </label>
                 <input
                   type="text"
                   id="title"
@@ -81,24 +89,32 @@ export const Editpost = () => {
               </div>
 
               <div>
-                <label htmlFor="description" className="block text-sm font-medium mb-1">Description</label>
-                <textarea
-                  id="description"
-                  placeholder="Enter description"
-                  {...register("description")}
-                  className="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  rows="4"
-                />
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium mb-1"
+                >
+                  Description
+                </label>
+                <Tinymc initial={userdoc.CONTENT} getvalue={getvalue} />
               </div>
-
               {image && (
                 <div className="my-4">
-                  <img src={image} alt="Featured" className="w-full h-auto max-h-64 object-contain rounded-md"f />
+                  <img
+                    src={image}
+                    alt="Featured"
+                    className="w-full h-auto max-h-64 object-contain rounded-md"
+                    f
+                  />
                 </div>
               )}
 
               <div>
-                <label htmlFor="image" className="block text-sm font-medium mb-1">Image</label>
+                <label
+                  htmlFor="image"
+                  className="block text-sm font-medium mb-1"
+                >
+                  Image
+                </label>
                 <input
                   type="file"
                   id="image"
@@ -108,7 +124,12 @@ export const Editpost = () => {
               </div>
 
               <div>
-                <label htmlFor="status" className="block text-sm font-medium mb-1">Status</label>
+                <label
+                  htmlFor="status"
+                  className="block text-sm font-medium mb-1"
+                >
+                  Status
+                </label>
                 <select
                   id="status"
                   {...register("status")}

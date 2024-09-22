@@ -1,4 +1,13 @@
-import { Client, Account, ID, Databases, Storage, Role,Query,Permission } from "appwrite";
+import {
+  Client,
+  Account,
+  ID,
+  Databases,
+  Storage,
+  
+  Query,
+  
+} from "appwrite";
 import { ApiError } from "../utils/Error";
 import conf from "../../../env/conf.js";
 
@@ -33,7 +42,10 @@ class AppwriteService {
 
   async login({ email, password }) {
     try {
-      const session = await this.account.createEmailPasswordSession(email, password);
+      const session = await this.account.createEmailPasswordSession(
+        email,
+        password
+      );
       return session;
     } catch (error) {
       throw new ApiError(
@@ -44,17 +56,16 @@ class AppwriteService {
     }
   }
 
-    async getUser() {
-      
-      try {
-        const user = await this.account.get(); // Fetch the user
-        console.log("User data: ", user);
-        return user;
-      } catch (error) {
-        console.error("Error fetching user: ", error); // Handle error
-        throw error; // Propagate error to be handled in the component
-      }
+  async getUser() {
+    try {
+      const user = await this.account.get(); // Fetch the user
+      console.log("User data: ", user);
+      return user;
+    } catch (error) {
+      console.error("Error fetching user: ", error); // Handle error
+      throw error; // Propagate error to be handled in the component
     }
+  }
 
   async logout() {
     try {
@@ -110,7 +121,7 @@ class AppwriteService {
         conf.VITE_DTABASE_ID, // databaseId
         conf.VITE_COLLECTION_ID, // collectionId
         documentid, // documentId
-        updatedata, // data (optional)
+        updatedata // data (optional)
       );
       return updateUser;
     } catch (error) {
@@ -160,10 +171,10 @@ class AppwriteService {
       const result = await this.databases.listDocuments(
         conf.VITE_DTABASE_ID, // databaseId
         conf.VITE_COLLECTION_ID, // collectionId
-        [Query.equal("STATUS", ["true"]), // queries (optional)
-        Query.contains("TITLE", [search])
-        
-      ] // queries (optional)
+        [
+          Query.equal("STATUS", ["true"]), // queries (optional)
+          Query.contains("TITLE", [search]),
+        ] // queries (optional)
       );
       return result;
     } catch (error) {
@@ -196,7 +207,7 @@ class AppwriteService {
       const imageUpload = await this.storage.createFile(
         conf.VITE_BUCKET_ID,
         ID.unique(),
-        imagefile,
+        imagefile
       );
       return imageUpload;
     } catch (error) {
@@ -239,7 +250,6 @@ class AppwriteService {
     }
   }
 }
-
 
 const appwriteService = new AppwriteService();
 export default appwriteService;

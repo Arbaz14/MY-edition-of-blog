@@ -1,17 +1,21 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import service from '../appwrite/config.js';
+import React from "react";
+import { useForm } from "react-hook-form";
+import service from "../appwrite/config.js";
 
 export const Signup = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   function submit(e) {
-    service.signup(e).then(res => {
-      console.log(res);
-    }).catch(err => {
-      console.log(err);
-    });
-    console.log(e);
+    service
+      .signup(e)
+      .then(() => {})
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
@@ -24,27 +28,43 @@ export const Signup = () => {
               type="text"
               className="w-full bg-black bg-opacity-20 border border-gray-300 p-4 rounded-lg text-white placeholder-white placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               placeholder="Name"
-              {...register('name', { required: true, minLength: 3 })}
+              {...register("name", { required: true, minLength: 3 })}
             />
-            {errors.name && <p className="text-red-500 text-sm mt-1">Name is required and should be at least 3 characters long.</p>}
+            {errors.name && (
+              <p className="text-red-500 text-sm mt-1">
+                Name is required and should be at least 3 characters long.
+              </p>
+            )}
           </div>
           <div>
             <input
               type="email"
               className="w-full bg-black bg-opacity-20 border border-gray-300 p-4 rounded-lg text-white placeholder-white placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               placeholder="Email"
-              {...register('email', { required: true, pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/ })}
+              {...register("email", {
+                required: true,
+                pattern:
+                  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+              })}
             />
-            {errors.email && <p className="text-red-500 text-sm mt-1">Invalid email address.</p>}
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">
+                Invalid email address.
+              </p>
+            )}
           </div>
           <div>
             <input
               type="password"
               className="w-full bg-black bg-opacity-20 border  border-gray-300 p-4 rounded-lg text-white placeholder-white placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               placeholder="Password"
-              {...register('password', { required: true, minLength: 6 })}
+              {...register("password", { required: true, minLength: 6 })}
             />
-            {errors.password && <p className="text-red-500 text-sm mt-1">Password is required and should be at least 6 characters long.</p>}
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                Password is required and should be at least 6 characters long.
+              </p>
+            )}
           </div>
           <div>
             <input

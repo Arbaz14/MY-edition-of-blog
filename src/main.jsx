@@ -2,23 +2,19 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Layout } from "./components/pages/Layout.jsx";
 import { Login } from "./components/pages/login.jsx";
 import { Signup } from "./components/pages/signup.jsx";
 import { Createpost } from "./components/pages/createpost.jsx";
 import { Provider } from "react-redux";
-import store  from "./store/store.js";
+import store from "./store/store.js";
 import { Mypost } from "./components/pages/mypost.jsx";
 import { Editpost } from "./components/pages/editpost.jsx";
 import { Post } from "./components/pages/post.jsx";
 import { Allpost } from "./components/pages/allpost.jsx";
 import { Readmore } from "./components/pages/readmore.jsx";
-import {NextUIProvider} from '@nextui-org/react'
-import { Search } from "./components/pages/search.jsx";
+import { NextUIProvider } from "@nextui-org/react";
 
 const router = createBrowserRouter([
   {
@@ -61,10 +57,6 @@ const router = createBrowserRouter([
         path: "/readmore",
         element: <Readmore />,
       },
-      {
-        path: "/ser",
-        element: <Search />,
-      },
     ],
   },
 ]);
@@ -72,9 +64,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <NextUIProvider>
-    <Provider store={store}>
-    <RouterProvider router={router} />
-    </Provider>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </NextUIProvider>
   </StrictMode>
 );

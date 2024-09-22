@@ -6,10 +6,10 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-  Link,
+  // Link,
   Button,
 } from "@nextui-org/react";
-import React from "react";
+// import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Logoutbutton from "./logoutbutton.jsx";
 import { useSelector } from "react-redux";
@@ -46,7 +46,6 @@ const Header = () => {
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        
         <NavbarItem isActive>
           {url.map((e, index) => (
             <Button
@@ -68,20 +67,17 @@ const Header = () => {
         {url.map((e, index) => (
           <NavbarMenuItem key={`${e}-${index}`}>
             <NavLink
-              
               className="w-full text-black transition-colors active:text-zinc-600 active:hover:text-zinc-700"
               to={e.url}
               size="lg"
             >
               {e.name}
             </NavLink>
-            
           </NavbarMenuItem>
-          
         ))}
         <NavbarMenuItem key="1">
-            <Logoutbutton/>
-          </NavbarMenuItem>
+          <Logoutbutton />
+        </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
   ) : (
@@ -99,7 +95,7 @@ const Header = () => {
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem isActive>
-        {url2.map((e, index) => (
+          {url2.map((e, index) => (
             <Button
               key={index}
               color="danger"
@@ -115,10 +111,10 @@ const Header = () => {
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
-      {url2.map((e, index) => (
+        {url2.map((e, index) => (
           <NavbarMenuItem key={`${e}-${index}`}>
             <NavLink
-              className="w-full text-black transition-colors active:text-zinc-600 active:hover:text-zinc-700" 
+              className="w-full text-black transition-colors active:text-zinc-600 active:hover:text-zinc-700"
               to={e.url}
               size="lg"
             >
