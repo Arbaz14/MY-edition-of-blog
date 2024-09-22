@@ -1,8 +1,39 @@
-# React + Vite
+# Blog Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a **full-stack blog website** built using modern technologies. The project includes a React.js frontend, Tailwind CSS for styling, and Appwrite for backend services like authentication and database management. The site allows users to create, edit, and delete blog posts.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Frontend:
+- **React.js**: JavaScript library for building user interfaces.
+- **Vite**: Fast development build tool for modern web projects.
+- **Tailwind CSS**: Utility-first CSS framework for building custom designs.
+- **NextUI**: Beautiful, modern components library for React.js.
+- **React Hook Form**: Simplified form management in React.
+- **HTML React Parser**: Safely parse and render HTML in React components.
+
+### Backend:
+- **Appwrite**: Backend-as-a-Service for user authentication, database, and storage.
+- **Node.js**: Backend JavaScript runtime for server-side logic.
+
+### Other Dependencies:
+- **Redux Toolkit**: State management library for managing global state.
+- **TinyMCE**: Rich text editor for writing blog content.
+- **React Router DOM**: Declarative routing for React apps.
+- **Framer Motion**: Animation library for React.
+- **Parallax Tilt Effects**: Libraries like `react-parallax`, `react-parallax-tilt`, and `tilt.js` for visual effects.
+
+## Features
+
+- **Responsive Design** using Tailwind CSS.
+- **Create, Edit, and Delete** blog posts.
+- **Authentication** with Appwrite.
+- **Rich Text Editing** using TinyMCE.
+- **State Management** with Redux Toolkit.
+- **Interactive Animations** using Framer Motion and Parallax Tilt effects.
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone repositry name
