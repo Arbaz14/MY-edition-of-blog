@@ -32,8 +32,8 @@ This is a **full-stack blog website** built using modern technologies. The proje
 - **State Management** with Redux Toolkit.
 - **Interactive Animations** using Framer Motion and Parallax Tilt effects.
 
-## Installation
+# replace
+.env.example to .env and add your ids in .env file to woek correctly 
 
-1. Clone the repository:
-   ```bash
-   git clone repositry name
+# diagram 
+https://app.eraser.io/workspace/jwA8xM2gQ20P6vq5ybj6?origin=share
