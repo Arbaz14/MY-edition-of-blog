@@ -33,7 +33,7 @@ This is a **full-stack blog website** built using modern technologies. The proje
 - **Interactive Animations** using Framer Motion and Parallax Tilt effects.
 
 # replace
-.env.example to .env and add your ids in .env file to woek correctly 
+.env.example to .env and add your ids in .env file to work correctly 
 
 # diagram 
 https://app.eraser.io/workspace/jwA8xM2gQ20P6vq5ybj6?origin=share
